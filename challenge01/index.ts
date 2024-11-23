@@ -28,10 +28,11 @@ Accede a este log.txt con una lista de intentos y con un programa cuenta cuánto
 
 Por ejemplo, si hay 10 intentos válidos y 5 inválidos envía el comando submit 10true5false
  */
-import { readFile } from 'node:fs/promises';
+import { getContentsFromFile as getPasswordsFromFile } from '../utils';
 import path from 'node:path';
 
-const FILE_PATH = './log.txt';
+const FILE_LOG_NAME = 'log.txt';
+const FILE_PATH = path.join(__dirname, FILE_LOG_NAME);
 
 function isNumber(char: string): boolean {
   return char.length === 1 && !isNaN(Number(char)) && char.trim() !== '';
@@ -60,18 +61,6 @@ function validPassword(password: string): boolean {
   }
 
   return true;
-}
-
-async function getPasswordsFromFile(filePath: string) {
-  const fullPath = path.join(__dirname, filePath);
-  try {
-    const fileContent = await readFile(fullPath, 'utf-8');
-    const passwords = fileContent.split('\n');
-
-    return passwords;
-  } catch (_error) {
-    throw new Error(`Error, file ${fullPath} not found`);
-  }
 }
 
 async function countTries() {
